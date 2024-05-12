@@ -62,7 +62,7 @@ function getFormattedCellValue<
 function serializeTsv(data: string[][]): string {
   return Papa.unparse(data, {
     delimiter: '\t',
-    escapeFormulae: true,
+    escapeFormulae: /^=|^\+|^@|^\t|^\r/,
   });
 }
 
@@ -118,7 +118,6 @@ export class SheetClipboardHandler<
     );
     const columns = this.deps.getColumnsMap();
     const recordSummaries = this.deps.getRecordSummaries();
-
     const tsvRows: string[][] = [];
     const structuredRows: StructuredCell[][] = [];
     for (const rowId of this.getRowIds(cells)) {
